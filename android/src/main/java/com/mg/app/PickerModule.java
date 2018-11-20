@@ -67,7 +67,7 @@ class PickerModule extends ReactContextBaseJavaModule {
     private boolean returnAfterShot = false;
     private boolean multipleShot  = false;
     private int spanCount = 3;
-    private boolean hideCropBottomControls = true;
+    private boolean hideCropBottomControls = false;
     private final ReactApplicationContext mReactContext;
 
     private Compression compression = new Compression();
@@ -275,7 +275,7 @@ class PickerModule extends ReactContextBaseJavaModule {
                     break;
             }
         }else{
-            rxGalleryFinal.imageLoader(ImageLoaderType.GLIDE);
+            rxGalleryFinal.imageLoader(ImageLoaderType.FRESCO);
         }
         if(!this.multiple) {
             if(cropping){
@@ -283,7 +283,7 @@ class PickerModule extends ReactContextBaseJavaModule {
                 if(this.width>0 && this.height>0){
                     rxGalleryFinal.cropMaxResultSize(this.width,this.height);
                 }
-                rxGalleryFinal.cropWithAspectRatio(1,1);
+//                rxGalleryFinal.cropWithAspectRatio(16,9);
                 rxGalleryFinal.cropHideBottomControls(this.hideCropBottomControls);
                 rxGalleryFinal.cropFreeStyleCropEnabled(true);
                 //rxGalleryFinal.cropOvalDimmedLayer(true);
@@ -405,7 +405,7 @@ class PickerModule extends ReactContextBaseJavaModule {
                         break;
                 }
             }else{
-                rxGalleryFinal.imageLoader(ImageLoaderType.GLIDE);
+                rxGalleryFinal.imageLoader(ImageLoaderType.FRESCO);
             }
             if(!this.multiple) {
                 if(cropping){
@@ -413,7 +413,7 @@ class PickerModule extends ReactContextBaseJavaModule {
                     if(this.width>0 && this.height>0){
                         rxGalleryFinal.cropMaxResultSize(this.width,this.height);
                     }
-                    rxGalleryFinal.cropWithAspectRatio(1,1);
+//                    rxGalleryFinal.cropWithAspectRatio(16,9);
                     rxGalleryFinal.cropHideBottomControls(this.hideCropBottomControls);
                     rxGalleryFinal.cropFreeStyleCropEnabled(true);
                     //裁剪图片的回调
