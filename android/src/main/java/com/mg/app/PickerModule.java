@@ -172,14 +172,14 @@ class PickerModule extends ReactContextBaseJavaModule {
             opts = validateImage(compressedImagePath);
         }
 
-        image.putString("path", "file://" + compressedImagePath);
-        image.putInt("width", options.outWidth);
-        image.putInt("height", options.outHeight);
-        image.putString("mime", options.outMimeType);
-        image.putInt("size", (int) new File(compressedImagePath).length());
+        image.putString("path", "file://" + resultImagePath);
+        image.putInt("width", opts.outWidth);
+        image.putInt("height", opts.outHeight);
+        image.putString("mime", opts.outMimeType);
+        image.putInt("size", (int) new File(resultImagePath).length());
 
         if (includeBase64) {
-            image.putString("data", getBase64StringFromFile(compressedImagePath));
+            image.putString("data", getBase64StringFromFile(resultImagePath));
         }
 
         return image;
