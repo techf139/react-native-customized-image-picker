@@ -107,11 +107,16 @@ class PickerModule extends ReactContextBaseJavaModule {
 
     private static String getMimeType(String url) {
         String type = null;
-        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-        if (extension != null) {
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        if (!TextUtils.isEmpty(url)) {
+            int index = url.lastIndexOf(".");
+            if (index > -1) {
+                String extType = url.substring(index);
+                String extension = MimeTypeMap.getFileExtensionFromUrl(extType);
+                if (extension != null) {
+                    type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                }
+            }
         }
-
         return type;
     }
 
@@ -153,13 +158,19 @@ class PickerModule extends ReactContextBaseJavaModule {
         if (path.startsWith("http://") || path.startsWith("https://")) {
             throw new Exception("Cannot select remote files");
         }
-        validateImage(path);
 
-        // if compression options are provided image will be compressed. If none options is provided,
-        // then original image will be returned
-        File compressedImage = compression.compressImage(activity, options, path);
-        String compressedImagePath = compressedImage.getPath();
-        BitmapFactory.Options options = validateImage(compressedImagePath);
+        BitmapFactory.Options opts = validateImage(path);
+        Log.e("PickerModule", opts.outMimeType);
+        String resultImagePath = path;
+        if (!("image/gif".equals(opts.outMimeType))) {//当图片不是gif时才压缩
+            // if compression options are provided image will be compressed. If none options is provided,
+            // then original image will be returned
+            Log.e("PickerModule", "进入压缩流程");
+            File compressedImage = compression.compressImage(activity, options, path);
+            String compressedImagePath = compressedImage.getPath();
+            resultImagePath = compressedImagePath;
+            opts = validateImage(compressedImagePath);
+        }
 
         image.putString("path", "file://" + compressedImagePath);
         image.putInt("width", options.outWidth);
